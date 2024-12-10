@@ -75,6 +75,18 @@ macro_rules! dialect_of {
     };
 }
 
+// Same as above but without the `.dialect` member lookup so that it can be
+// applied to instances of a dialect directly.
+//
+// I realize there's a big note right there discouraging this, but I'm not
+// going to mix re-writing the existing logic while working on token zero-copy
+// semantics and lifetime issues.
+macro_rules! dialect_is {
+    ($dialect:ident is $($dialect_type:ty)|+) => {
+        ($($dialect.is::<$dialect_type>())||+)
+    }
+}
+
 /// Encapsulates the differences between SQL implementations.
 ///
 /// # SQL Dialects
